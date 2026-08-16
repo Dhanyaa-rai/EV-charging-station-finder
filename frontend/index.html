@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV ChargeFinder</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <h1>EV ChargeFinder</h1>
+                <p class="subtitle">Find. Book. Charge.</p>
+            </div>
+            <nav class="main-nav">
+                <button id="nav-dashboard" class="nav-btn active">Dashboard</button>
+                <button id="nav-stations" class="nav-btn">Stations</button>
+                <button id="nav-bookings" class="nav-btn">My Bookings</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <!-- Messages -->
+        <div id="message-container" class="message-container hidden"></div>
+
+        <!-- Dashboard Section -->
+        <section id="section-dashboard" class="section active">
+            <h2>Dashboard</h2>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Total Stations</h3>
+                    <p id="stat-total-stations" class="stat-value">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Available Stations</h3>
+                    <p id="stat-available-stations" class="stat-value">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Bookings</h3>
+                    <p id="stat-active-bookings" class="stat-value">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Completed Bookings</h3>
+                    <p id="stat-completed-bookings" class="stat-value">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stations Section -->
+        <section id="section-stations" class="section hidden">
+            <div class="section-header">
+                <h2>Charging Stations</h2>
+                <div class="filters">
+                    <input type="text" id="search-input" placeholder="Search stations, location..." class="search-input">
+                    <select id="filter-type" class="filter-select">
+                        <option value="All">All Types</option>
+                        <option value="AC">AC</option>
+                        <option value="DC Fast Charging">DC Fast Charging</option>
+                        <option value="CCS">CCS</option>
+                        <option value="CHAdeMO">CHAdeMO</option>
+                    </select>
+                    <select id="filter-availability" class="filter-select">
+                        <option value="All">All Availability</option>
+                        <option value="Available">Available</option>
+                        <option value="Busy">Busy</option>
+                        <option value="Full">Full</option>
+                        <option value="Offline">Offline</option>
+                    </select>
+                </div>
+            </div>
+            <div id="stations-grid" class="stations-grid">
+                <!-- Station Cards will be injected here -->
+            </div>
+        </section>
+
+        <!-- Bookings Section -->
+        <section id="section-bookings" class="section hidden">
+            <div class="section-header">
+                <h2>My Bookings</h2>
+            </div>
+            <div id="bookings-list" class="bookings-list">
+                <!-- Bookings will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Station Details Modal -->
+    <div id="modal-station-details" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-station-name">Station Name</h2>
+            <div class="modal-body" id="modal-station-body">
+                <!-- Details injected here -->
+            </div>
+            <div class="modal-actions">
+                <button id="btn-open-booking" class="btn btn-primary">Book Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Form Modal -->
+    <div id="modal-booking-form" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="booking-modal-title">Make a Booking</h2>
+            <form id="booking-form" class="booking-form">
+                <input type="hidden" id="booking-id">
+                <div class="form-group">
+                    <label for="book-station">Station</label>
+                    <select id="book-station" required disabled>
+                        <!-- Options injected -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="book-name">Full Name</label>
+                    <input type="text" id="book-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-contact">Contact Number</label>
+                    <input type="tel" id="book-contact" required pattern="[0-9]{10}" title="10 digit phone number">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="book-date">Date</label>
+                        <input type="date" id="book-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-time">Time</label>
+                        <input type="time" id="book-time" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="book-vehicle-num">Vehicle Number</label>
+                        <input type="text" id="book-vehicle-num" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-vehicle-model">Vehicle Model</label>
+                        <input type="text" id="book-vehicle-model" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="book-type">Charging Type</label>
+                        <select id="book-type" required>
+                            <option value="AC">AC</option>
+                            <option value="DC Fast Charging">DC Fast Charging</option>
+                            <option value="CCS">CCS</option>
+                            <option value="CHAdeMO">CHAdeMO</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-duration">Duration (Hours)</label>
+                        <input type="number" id="book-duration" min="1" max="24" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-booking">Confirm Booking</button>
+                    <button type="button" class="btn btn-secondary close-modal-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Details Modal -->
+    <div id="modal-booking-details" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Booking Details</h2>
+            <div class="modal-body" id="modal-booking-body">
+                <!-- Details injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
